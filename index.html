@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ministério das Finanças</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%AA%99%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Figtree:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="auth" id="auth" hidden>
+  <form class="authcard" id="authform" novalidate>
+    <div class="brand"><span class="coin" aria-hidden="true">M</span><span>Ministério das Finanças</span></div>
+    <h2 id="authtitle">Entrar</h2>
+    <div class="f" id="a-email-wrap"><label for="a-email">E-mail</label><input type="email" id="a-email" autocomplete="email" inputmode="email"></div>
+    <div class="f" id="a-pass-wrap"><label for="a-pass" id="a-pass-label">Senha</label><input type="password" id="a-pass" autocomplete="current-password"></div>
+    <p class="err" id="authmsg" role="alert"></p>
+    <p class="info" id="authinfo" role="status"></p>
+    <div class="dfoot">
+      <button type="button" class="btn" id="a-signup">Criar conta</button>
+      <button type="submit" class="btn primary" id="a-submit">Entrar</button>
+    </div>
+    <p style="margin:12px 0 0"><button type="button" class="linkbtn" id="a-forgot">Esqueci minha senha</button></p>
+  </form>
+</div>
+
+<div class="app">
+  <aside class="side">
+    <div class="brand"><span class="coin" aria-hidden="true">M</span><span>Ministério das Finanças</span></div>
+    <nav class="nav" id="nav" aria-label="Seções"></nav>
+  </aside>
+  <main class="main">
+    <header class="top">
+      <div class="monthnav" id="monthnav">
+        <button class="icon-btn" data-act="mprev" aria-label="Mês anterior">&#8249;</button>
+        <h1 id="monthlabel"></h1>
+        <button class="icon-btn" data-act="mnext" aria-label="Próximo mês">&#8250;</button>
+      </div>
+      <div class="topr">
+        <button class="btn small sync" id="sync" data-act="retry-sync" hidden role="status"></button>
+        <select id="profile" aria-label="Perfil"></select>
+        <button class="btn primary" data-act="new-tx">Novo lançamento</button>
+      </div>
+    </header>
+    <form class="quick" id="quick">
+      <input type="text" id="quickin" placeholder="Digite: paguei 48,90 no mercado ontem" aria-label="Lançamento rápido" autocomplete="off">
+      <button class="btn" type="submit">Preencher</button>
+    </form>
+    <div id="view"></div>
+  </main>
+</div>
+
+<dialog id="dtx" aria-labelledby="dtx-title">
+  <form id="ftx">
+    <h2 id="dtx-title">Novo lançamento</h2>
+    <div class="seg" role="radiogroup" aria-label="Tipo">
+      <span class="opt"><input type="radio" name="ttype" id="t-out" value="out"><label for="t-out">Despesa</label></span>
+      <span class="opt"><input type="radio" name="ttype" id="t-in" value="in"><label for="t-in">Receita</label></span>
+      <span class="opt"><input type="radio" name="ttype" id="t-tr" value="tr"><label for="t-tr">Transferência</label></span>
+    </div>
+    <div class="f"><label for="f-desc">Descrição</label><input type="text" id="f-desc" name="desc" autocomplete="off"></div>
+    <div class="two">
+      <div class="f"><label for="f-amount">Valor</label><input type="text" id="f-amount" name="amount" inputmode="decimal" placeholder="0,00" autocomplete="off"></div>
+      <div class="f"><label for="f-date">Data</label><input type="date" id="f-date" name="date"></div>
+    </div>
+    <div class="f" id="g-cat"><label for="f-cat">Categoria</label><select id="f-cat" name="cat"></select></div>
+    <div class="two">
+      <div class="f"><label for="f-acc" id="l-acc">Conta</label><select id="f-acc" name="acc"></select></div>
+      <div class="f" id="g-acc2"><label for="f-acc2">Entra em</label><select id="f-acc2" name="acc2"></select></div>
+    </div>
+    <div class="f inline"><input type="checkbox" id="f-paid" name="paid"><label for="f-paid" id="l-paid">Já efetivado</label></div>
+    <div class="two" id="g-repeat">
+      <div class="f"><label for="f-rep">Repetição</label>
+        <select id="f-rep" name="rep"><option value="none">Não repetir</option><option value="monthly">Todo mês</option><option value="inst">Parcelado</option></select></div>
+      <div class="f" id="g-count"><label for="f-count">Quantas vezes</label><input type="number" id="f-count" name="count" min="2" max="60" value="12"></div>
+    </div>
+    <p class="invhint" id="invhint" hidden></p>
+    <p class="err" id="txerr" role="alert"></p>
+    <div class="dfoot">
+      <button type="button" class="btn danger spacer" id="tx-del" hidden>Excluir</button>
+      <button type="button" class="btn" data-act="close">Cancelar</button>
+      <button type="submit" class="btn primary">Salvar</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="dgen" aria-labelledby="dgen-title">
+  <form id="fgen">
+    <h2 id="dgen-title"></h2>
+    <div id="dgen-fields"></div>
+    <p class="err" id="dgen-err" role="alert"></p>
+    <div class="dfoot">
+      <button type="button" class="btn danger spacer" id="dgen-del" hidden>Excluir</button>
+      <button type="button" class="btn" data-act="close">Cancelar</button>
+      <button type="submit" class="btn primary">Salvar</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="dtxt" aria-labelledby="dtxt-title">
+  <div class="dbody">
+    <h2 id="dtxt-title"></h2>
+    <p class="note" id="dtxt-note" style="color:var(--muted);font-size:14px;margin:0 0 12px"></p>
+    <textarea id="dtxt-area" spellcheck="false" aria-label="Conteúdo"></textarea>
+    <p class="err" id="dtxt-err" role="alert"></p>
+    <div class="dfoot">
+      <button type="button" class="btn" data-act="close">Fechar</button>
+      <button type="button" class="btn" id="dtxt-copy" data-act="copy">Copiar</button>
+      <button type="button" class="btn primary" id="dtxt-go" data-act="do-import" hidden>Importar</button>
+    </div>
+  </div>
+</dialog>
+<script src="config.js"></script>
+<script src="vendor/supabase.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
